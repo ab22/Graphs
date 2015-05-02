@@ -25,6 +25,12 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return result;
+	case WM_CLOSE:
+		result = MessageBox(hwnd, TEXT("Are you sure you want to exit?"), TEXT("Exit application"), MB_YESNOCANCEL | MB_ICONQUESTION);
+		if (result == IDYES) {
+			DestroyWindow(hwnd);
+		}
+		return 0;
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}

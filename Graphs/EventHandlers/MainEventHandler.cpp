@@ -139,11 +139,6 @@ LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
 }
 
 LRESULT MainEventHandler::onToolbarExitClick() {
-	LRESULT result = MessageBox(hwnd, TEXT("Are you sure you want to exit?"), TEXT("Exit application"), MB_YESNOCANCEL | MB_ICONQUESTION);
-
-	if (result == IDYES) {
-		PostQuitMessage(0);
-	}
-
+	SendMessage(this->hwnd, WM_CLOSE, 0, 0);
 	return TRUE;
 }
