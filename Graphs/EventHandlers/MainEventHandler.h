@@ -16,15 +16,15 @@ name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 
-struct MainWindowControls {
-	HWND mainToolbar;
-};
-
-
 enum TOOLBAR_BUTTON {
 	ADD_NODE,
 	DELETE_NODE,
 	EXIT
+};
+
+
+struct MainWindowControls {
+	HWND mainToolbar;
 };
 
 
@@ -50,10 +50,11 @@ public:
 	LRESULT OnCommand(CommandWindowMessage*);
 
 private:
-	void calculateDefaultFontSizes(HDC);
-	BOOL initCommonVisualControls();
-	void createMainToolbar();
-	LRESULT onToolbarAddNodeClick();
-	LRESULT onToolbarDeleteNodeClick();
-	LRESULT onToolbarExitClick();
+	LRESULT  onToolbarAddNodeClick();
+	LRESULT  onToolbarDeleteNodeClick();
+	LRESULT  onToolbarExitClick();
+	BOOL     initCommonVisualControls();
+	void     calculateDefaultFontSizes(HDC);	
+	void     createMainToolbar();
+	
 };
