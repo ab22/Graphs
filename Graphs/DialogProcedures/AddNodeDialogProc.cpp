@@ -3,8 +3,8 @@
 AddNodeDialogHandler *dialogHandler = NULL;
 
 INT_PTR CALLBACK AddNodeDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
-	WinMessageBase *message = NULL;
-	INT_PTR			result;
+	WinMessageBase* message = NULL;
+	INT_PTR         result;
 
 	switch (msg) {
 	case WM_INITDIALOG:

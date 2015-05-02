@@ -3,10 +3,10 @@
 
 class WinMessageBase {
 public:
-	HWND hwnd;
-	UINT msg;
-	WPARAM wParam;
-	LPARAM lParam;
+	HWND    hwnd;
+	UINT    msg;
+	WPARAM  wParam;
+	LPARAM  lParam;
 
 	WinMessageBase(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

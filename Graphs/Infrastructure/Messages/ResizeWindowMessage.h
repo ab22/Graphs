@@ -5,9 +5,9 @@
 
 class ResizeWindowMessage : public WinMessageBase {
 public:
-	DWORD	resizeTypeRequested;
-	WORD	newWidth;
-	WORD	newHeight;
+	DWORD   resizeTypeRequested;
+	WORD    newWidth;
+	WORD    newHeight;
 
 	ResizeWindowMessage(HWND, UINT, WPARAM, LPARAM);
 };

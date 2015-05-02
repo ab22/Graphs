@@ -7,7 +7,7 @@
 
 class AddNodeDialogHandler {
 private:
-	HWND				hwnd;
+	HWND hwnd;
 
 public:
 	AddNodeDialogHandler(HWND);

@@ -13,7 +13,7 @@ MainEventHandler::~MainEventHandler() {
 }
 
 LRESULT MainEventHandler::OnCreate(CreateWindowMessage *msg) {
-	HDC		hdc;
+	HDC hdc;
 
 	hdc = GetDC(msg->hwnd);
 	this->hwnd = msg->hwnd;
@@ -27,7 +27,7 @@ LRESULT MainEventHandler::OnCreate(CreateWindowMessage *msg) {
 }
 
 LRESULT MainEventHandler::OnPaint(PaintWindowMessage *msg) {
-	HDC			hdc;
+	HDC         hdc;
 	PAINTSTRUCT ps;
 
 	hdc = BeginPaint(msg->hwnd, &ps);
@@ -56,7 +56,8 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 }
 
 void MainEventHandler::calculateDefaultFontSizes(HDC hdc) {
-	TEXTMETRIC	tm;
+	TEXTMETRIC tm;
+
 	GetTextMetrics(hdc, &tm);
 	this->charWidth = tm.tmAveCharWidth;
 	this->charHeight = tm.tmHeight + tm.tmInternalLeading;
@@ -71,12 +72,12 @@ BOOL MainEventHandler::initCommonVisualControls() {
 
 void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
-	const int	bitmapSize = 16;
-	const int	numButtons = 3;
-	const int	imageListId = 0;
-	HIMAGELIST	imageList = NULL;
-	TBBUTTON	tbButtons[3];
-	HWND		toolBar = NULL;
+	const int   bitmapSize = 16;
+	const int   numButtons = 3;
+	const int   imageListId = 0;
+	HIMAGELIST  imageList = NULL;
+	TBBUTTON    tbButtons[3];
+	HWND        toolBar = NULL;
 
 	toolBar = CreateWindowEx(
 		0,
@@ -117,7 +118,7 @@ void MainEventHandler::createMainToolbar() {
 }
 
 LRESULT MainEventHandler::onToolbarAddNodeClick() {
-	TCHAR*		nodeName;
+	TCHAR* nodeName;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DIALOG1), this->hwnd, AddNodeDialogProc);
 

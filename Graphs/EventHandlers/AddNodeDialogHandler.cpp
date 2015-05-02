@@ -20,8 +20,8 @@ LRESULT AddNodeDialogHandler::OnCommand(CommandWindowMessage *msg) {
 }
 
 LRESULT AddNodeDialogHandler::onOkButtonClick() {
-	TCHAR*	nodeName;
-	WORD	nodeNameLength;
+	TCHAR*  nodeName;
+	WORD    nodeNameLength;
 
 	nodeNameLength = (WORD)SendDlgItemMessage(this->hwnd, IDC_NODE_NAME_EDIT, EM_LINELENGTH, 0, 0);
 

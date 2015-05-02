@@ -17,7 +17,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 
 struct MainWindowControls {
-	HWND	mainToolbar;
+	HWND mainToolbar;
 };
 
 
@@ -30,11 +30,11 @@ enum TOOLBAR_BUTTON {
 
 class MainEventHandler {
 private:
-	MainWindowControls	mainWindowControls;
-	HINSTANCE			hInstance;
-	HWND				hwnd;
-	int					charWidth;
-	int					charHeight;
+	MainWindowControls  mainWindowControls;
+	HINSTANCE           hInstance;
+	HWND                hwnd;
+	int                 charWidth;
+	int                 charHeight;
 
 public:
 	MainEventHandler();
