@@ -53,4 +53,7 @@ private:
 	void calculateDefaultFontSizes(HDC);
 	BOOL initCommonVisualControls();
 	void createMainToolbar();
+	LRESULT onToolbarAddNodeClick();
+	LRESULT onToolbarDeleteNodeClick();
+	LRESULT onToolbarExitClick();
 };

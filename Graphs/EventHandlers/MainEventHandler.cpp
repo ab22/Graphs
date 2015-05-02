@@ -44,24 +44,15 @@ LRESULT MainEventHandler::OnResize(ResizeWindowMessage *msg) {
 
 LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 	if (msg->buttonIdentifier == TOOLBAR_BUTTON::ADD_NODE) {
-		TCHAR	*nodeName;
-		LRESULT result = DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DIALOG1), msg->hwnd, AddNodeDialogProc);
-		if (result != NULL) {
-			nodeName = (TCHAR*)result;
-			MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
-			delete nodeName;
-		}
-		else{
-			MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
-		}
+		return this->onToolbarAddNodeClick();
+	}
+	else if (msg->buttonIdentifier == TOOLBAR_BUTTON::DELETE_NODE) {
+		return this->onToolbarDeleteNodeClick();
 	}
 	else if (msg->buttonIdentifier == TOOLBAR_BUTTON::EXIT){
-		LRESULT result = MessageBox(hwnd, TEXT("Are you sure you want to exit?"), TEXT("Exit application"), MB_YESNOCANCEL | MB_ICONQUESTION);
-		if (result == IDYES) {
-			PostQuitMessage(0);
-		}
+		return this->onToolbarExitClick();
 	}
-	return 0;
+	return FALSE;
 }
 
 void MainEventHandler::calculateDefaultFontSizes(HDC hdc) {
@@ -123,4 +114,35 @@ void MainEventHandler::createMainToolbar() {
 	SendMessage(toolBar, TB_AUTOSIZE, 0, 0);
 
 	this->mainWindowControls.mainToolbar = toolBar;
+}
+
+LRESULT MainEventHandler::onToolbarAddNodeClick() {
+	TCHAR*		nodeName;
+	
+	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DIALOG1), this->hwnd, AddNodeDialogProc);
+
+	if (nodeName != NULL) {
+		MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
+		delete nodeName;
+	}
+	else{
+		MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
+	}
+
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
+	MessageBox(this->hwnd, TEXT("Show delete node dialog!"), TEXT("Delete node"), MB_OK | MB_ICONINFORMATION);
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarExitClick() {
+	LRESULT result = MessageBox(hwnd, TEXT("Are you sure you want to exit?"), TEXT("Exit application"), MB_YESNOCANCEL | MB_ICONQUESTION);
+
+	if (result == IDYES) {
+		PostQuitMessage(0);
+	}
+
+	return TRUE;
 }
