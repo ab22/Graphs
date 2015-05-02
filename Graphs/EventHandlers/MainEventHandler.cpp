@@ -121,13 +121,12 @@ LRESULT MainEventHandler::onToolbarAddNodeClick() {
 	TCHAR* nodeName;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_NODE_DIALOG), this->hwnd, AddNodeDialogProc);
-	if (nodeName != NULL) {
-		MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
-		delete nodeName;
-	}
-	else {
+	if (nodeName == NULL) {
 		MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
+		return TRUE;
 	}
+	MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
+	delete nodeName;
 	return TRUE;
 }
 
