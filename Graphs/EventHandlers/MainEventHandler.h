@@ -1,10 +1,13 @@
 #pragma once
 
+
 #include <Windows.h>
 #include <CommCtrl.h>
+
 #include "../Infrastructure/Messages/WindowMessages.h"
-#include "../resource.h"
 #include "../DialogProcedures/AddNodeDialogProc.h"
+#include "../Algorithms/Graphs.h"
+#include "../resource.h"
 
 
 // Manifest to use the latest CommCtl32 library which
@@ -32,6 +35,7 @@ class MainEventHandler {
 private:
 	MainWindowControls  mainWindowControls;
 	HINSTANCE           hInstance;
+	Grafos              graphs;
 	HWND                hwnd;
 	int                 charWidth;
 	int                 charHeight;

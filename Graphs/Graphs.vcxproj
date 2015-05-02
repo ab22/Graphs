@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithms\Graphs.cpp" />
     <ClCompile Include="DialogProcedures\AddNodeDialogProc.cpp" />
     <ClCompile Include="EventHandlers\AddNodeDialogHandler.cpp" />
     <ClCompile Include="EventHandlers\MainEventHandler.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithms\Graphs.h" />
     <ClInclude Include="DialogProcedures\AddNodeDialogProc.h" />
     <ClInclude Include="EventHandlers\AddNodeDialogHandler.h" />
     <ClInclude Include="EventHandlers\MainEventHandler.h" />
