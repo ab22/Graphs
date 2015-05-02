@@ -9,7 +9,4 @@ public:
 	LPARAM lParam;
 
 	WinMessageBase(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-protected:
-	virtual void TranslateMessage() = 0;
 };

@@ -5,11 +5,7 @@
 
 class CreateWindowMessage : public WinMessageBase {
 public:
+	CREATESTRUCT*	createStruct;
+
 	CreateWindowMessage(HWND, UINT, WPARAM, LPARAM);
-
-protected:
-	void TranslateMessage();
-
-private: 
-	CREATESTRUCT *createStruct;
 };

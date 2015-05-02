@@ -3,20 +3,35 @@
 MainEventHandler *mainEventHandler = NULL;
 
 LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	WinMessageBase *message;
+	WinMessageBase *message = NULL;
+	LRESULT			result  = 0;
 	switch (msg) {
 	case WM_CREATE:
 		message = new CreateWindowMessage(hwnd, msg, wParam, lParam);
-		return mainEventHandler->OnCreate((CreateWindowMessage *)message);
+		result = mainEventHandler->OnCreate((CreateWindowMessage *)message);
+		break;
+	case WM_COMMAND:
+		message = new CommandWindowMessage(hwnd, msg, wParam, lParam);
+		result = mainEventHandler->OnCommand((CommandWindowMessage *)message);
+		break;
 	case WM_PAINT:
 		message = new PaintWindowMessage(hwnd, msg, wParam, lParam);
-		return mainEventHandler->OnPaint((PaintWindowMessage *)message);
+		result = mainEventHandler->OnPaint((PaintWindowMessage *)message);
+		break;
+	case WM_SIZE:
+		message = new ResizeWindowMessage(hwnd, msg, wParam, lParam);
+		result = mainEventHandler->OnResize((ResizeWindowMessage *)message);
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
-		return 0;
+		return result;
+	default: 
+		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
-	return DefWindowProc(hwnd, msg, wParam, lParam);
+	if (message != NULL)
+		delete message;
+	return result;
 }
 
 
@@ -31,7 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *lpCmdLine
 	wc.hIcon = LoadIcon(0, IDI_WINLOGO);
 	wc.hInstance = hInstance;
 	wc.lpfnWndProc = WinProc;
-	wc.lpszClassName = TEXT("Main");
+	wc.lpszClassName = APP_CLASS_NAME;
 	wc.lpszMenuName = NULL;
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	RegisterClass(&wc);
@@ -49,7 +64,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *lpCmdLine
 		hInstance,
 		0
 	);
-	ShowWindow(hwnd, nShowCmd);
+	ShowWindow(hwnd, SW_MAXIMIZE);
 	UpdateWindow(hwnd);
 
 	MSG msg;
@@ -57,6 +72,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *lpCmdLine
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
-
+	delete mainEventHandler;
 	return msg.wParam;
 }
