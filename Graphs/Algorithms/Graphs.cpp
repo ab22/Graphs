@@ -18,7 +18,7 @@ int wcharToInt(WCHAR *c) {
 	return  num;
 }
 
-Grafos::Grafos() {
+Graphs::Graphs() {
 	nAristas = nVertices = 0;
 	cont = 1;
 	topologia = orden = 0;
@@ -29,11 +29,11 @@ Grafos::Grafos() {
 	inc1 = inc2 = 0;
 }
 
-Grafos::~Grafos(){
+Graphs::~Graphs(){
 
 }
 
-int Grafos::contarAristas() {
+int Graphs::contarAristas() {
 	int cant = 0;
 	for (int i = 0; i < nVertices; i++) {
 		for (int j = 0; j < nVertices; j++) {
@@ -44,7 +44,7 @@ int Grafos::contarAristas() {
 	return cant;
 }
 
-bool Grafos::agregar(WCHAR *vertice, int x, int y) {
+bool Graphs::agregar(WCHAR *vertice, int x, int y) {
 	if (buscarVertice(vertice) != -1)
 		return false;
 	WCHAR **verticesTmp = new WCHAR*[nVertices + 1];
@@ -109,7 +109,7 @@ bool Grafos::agregar(WCHAR *vertice, int x, int y) {
 	return true;
 }
 
-bool Grafos::borrar(WCHAR *vertice) {
+bool Graphs::borrar(WCHAR *vertice) {
 		int verticePos = buscarVertice(vertice);
 		if (verticePos != -1) {
 			if (nVertices - 1 == 0) {
@@ -180,7 +180,7 @@ bool Grafos::borrar(WCHAR *vertice) {
 		return false;
 	}
 
-bool Grafos::agregarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
+bool Graphs::agregarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
 	if (origen[0] == destino[0])
 		return false;
 	int origin = buscarVertice(origen);
@@ -216,7 +216,7 @@ bool Grafos::agregarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
 	return false;
 }
 
-bool Grafos::borrarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
+bool Graphs::borrarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
 	if (origen[0] == destino[0])
 		return false;
 	int origin = buscarVertice(origen);
@@ -245,14 +245,14 @@ bool Grafos::borrarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
 	return false;
 }
 
-int Grafos::buscarVertice(WCHAR *vertice) {
+int Graphs::buscarVertice(WCHAR *vertice) {
 	for (int i = 0; i < nVertices; i++)
 		if (vertices[i][0] == vertice[0])
 			return i;
 	return -1;
 }
 
-void Grafos::imprimir() {
+void Graphs::imprimir() {
 	for (int i = 0; i < nVertices; i++)
 		cout << vertices[i] << " ";
 	cout << endl;
@@ -265,7 +265,7 @@ void Grafos::imprimir() {
 	}
 }
 
-bool Grafos::buscarCirculo(int x, int y, circles *LPCIRCLE) {
+bool Graphs::buscarCirculo(int x, int y, circles *LPCIRCLE) {
 	for (int i = 0; i < nVertices; i++) {
 		if ((cc[i].x >= x + 15 && cc[i].y >= y + 15) && (cc[i].x <= x + 40 && cc[i].y <= y + 40)) {
 			LPCIRCLE->x = cc[i].x;
@@ -276,7 +276,7 @@ bool Grafos::buscarCirculo(int x, int y, circles *LPCIRCLE) {
 	return false;
 }
 
-bool Grafos::esAciclico() {
+bool Graphs::esAciclico() {
 	crearMarcas();
 	aciclico = true;
 	for (int i = 0; i < nVertices; i++) {
@@ -287,13 +287,13 @@ bool Grafos::esAciclico() {
 	return aciclico;
 }
 
-void Grafos::crearMarcas() {
+void Graphs::crearMarcas() {
 	marca = new bool[nVertices];
 	for (int i = 0; i < nVertices; i++)
 		marca[i] = false;
 }
 
-void Grafos::bpfAciclico(int vertice) {
+void Graphs::bpfAciclico(int vertice) {
 	marca[vertice] = true;
 	for (int i = 0; i < nVertices; i++) {
 		if (aristas[vertice][i] == 1) {
@@ -307,7 +307,7 @@ void Grafos::bpfAciclico(int vertice) {
 	marca[vertice] = false;
 }
 
-void Grafos::recursoTopologico() {
+void Graphs::recursoTopologico() {
 	if (topologia != 0)
 		delete topologia;
 	topologia = new int[nVertices];
@@ -322,7 +322,7 @@ void Grafos::recursoTopologico() {
 	delete[]marca;
 }
 
-void Grafos::bpfTopologico(int vertice) {
+void Graphs::bpfTopologico(int vertice) {
 	marca[vertice] = true;
 	for (int i = 0; i < nVertices; i++) {
 		if (aristas[vertice][i] == 1) {
@@ -334,7 +334,7 @@ void Grafos::bpfTopologico(int vertice) {
 	cont++;
 }
 
-int* Grafos::componentesFuertes() {
+int* Graphs::componentesFuertes() {
 	int *componentes = new int[nVertices];
 	for (int i = 0; i < nVertices; i++)
 		componentes[i] = 0;
@@ -344,7 +344,7 @@ int* Grafos::componentesFuertes() {
 	return componentes;
 }
 
-void Grafos::algoritmoFloyd(Floyd *floyd) {
+void Graphs::algoritmoFloyd(Floyd *floyd) {
 	floyd->distancias = new int*[nVertices];
 	floyd->iteraciones = new int*[nVertices];
 	for (int i = 0; i < nVertices; i++) {
@@ -388,7 +388,7 @@ void Grafos::algoritmoFloyd(Floyd *floyd) {
 
 }
 
-void Grafos::algoritmoDijkstra(Dijkstra *dijkstra) {
+void Graphs::algoritmoDijkstra(Dijkstra *dijkstra) {
 	for (int i = 0; i < nVertices; i++) {
 		dijkstra[i].iteracion = 0;
 		dijkstra[i].distancia = 0;
@@ -401,7 +401,7 @@ void Grafos::algoritmoDijkstra(Dijkstra *dijkstra) {
 	delete[]marca;
 }
 
-void Grafos::bpfDijkstra(int vertice, Dijkstra *dijkstra, int iteracion) {
+void Graphs::bpfDijkstra(int vertice, Dijkstra *dijkstra, int iteracion) {
 	for (int i = 0; i < nVertices; i++) {
 		if ((aristas[vertice][i] == 1 && !marca[i])) {
 			marca[i] = true;
@@ -416,7 +416,7 @@ void Grafos::bpfDijkstra(int vertice, Dijkstra *dijkstra, int iteracion) {
 	}
 }
 
-void Grafos::encontrarComponentes(int *componentes, int ** aristasInvertidas) {
+void Graphs::encontrarComponentes(int *componentes, int ** aristasInvertidas) {
 	crearMarcas();
 	int cont = nVertices;
 	for (int i = 0; i < nVertices; i++) {
@@ -429,7 +429,7 @@ void Grafos::encontrarComponentes(int *componentes, int ** aristasInvertidas) {
 	}
 }
 
-void Grafos::bpfComponentes(int vertice, int **aristasInvertidas) {
+void Graphs::bpfComponentes(int vertice, int **aristasInvertidas) {
 	marca[vertice] = true;
 	for (int i = 0; i < nVertices; i++) {
 		if (aristasInvertidas[vertice][i] == 1) {
@@ -440,7 +440,7 @@ void Grafos::bpfComponentes(int vertice, int **aristasInvertidas) {
 	}
 }
 
-int Grafos::encontrarCont(int cont) {
+int Graphs::encontrarCont(int cont) {
 	for (int i = 0; i < nVertices; i++) {
 		if (topologia[i] == cont)
 			return i;
@@ -448,7 +448,7 @@ int Grafos::encontrarCont(int cont) {
 	return -1;
 }
 
-int** Grafos::invertirGrafo() {
+int** Graphs::invertirGrafo() {
 	int **aristasInvertidas = new int*[nVertices];
 	for (int i = 0; i < nVertices; i++)
 		aristasInvertidas[i] = new int[nVertices];
@@ -458,7 +458,3 @@ int** Grafos::invertirGrafo() {
 	}
 	return aristasInvertidas;
 }
-
-
-//};
-#pragma endregion

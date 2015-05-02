@@ -29,7 +29,7 @@ struct Dijkstra {
 	int iteracion, distancia, procede;
 };
 
-class Grafos {
+class Graphs {
 public:
 	circles* cc;
 	WCHAR**  vertices;
@@ -45,8 +45,8 @@ public:
 	int      nAristas;
 	int      cont;
 	
-	Grafos();
-	~Grafos();
+	Graphs();
+	~Graphs();
 
 	int  contarAristas();
 	bool agregar(WCHAR*, int, int);
