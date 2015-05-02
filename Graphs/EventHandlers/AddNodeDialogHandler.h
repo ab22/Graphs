@@ -17,4 +17,6 @@ public:
 	LRESULT OnCommand(CommandWindowMessage*);
 
 private:
+	LRESULT onOkButtonClick();
+	LRESULT onCancelButtonClick();
 };
