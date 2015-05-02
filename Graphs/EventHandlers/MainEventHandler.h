@@ -21,18 +21,18 @@ struct MainWindowControls {
 };
 
 
-enum TOOLBAR_BUTTON{
+enum TOOLBAR_BUTTON {
 	ADD_NODE,
 	DELETE_NODE,
 	EXIT
 };
 
 
-class MainEventHandler{
+class MainEventHandler {
 private:
 	MainWindowControls	mainWindowControls;
 	HINSTANCE			hInstance;
-	HWND				hwnd;	
+	HWND				hwnd;
 	int					charWidth;
 	int					charHeight;
 

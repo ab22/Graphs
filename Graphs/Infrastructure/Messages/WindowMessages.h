@@ -1,6 +1,6 @@
 /*
 	Includes all custom class messages in one whole file.
-*/
+	*/
 
 #pragma once
 

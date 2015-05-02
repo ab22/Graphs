@@ -5,7 +5,7 @@
 #include "../Infrastructure/Messages/WindowMessages.h"
 
 
-class AddNodeDialogHandler{
+class AddNodeDialogHandler {
 private:
 	HWND				hwnd;
 

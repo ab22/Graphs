@@ -38,7 +38,7 @@ LRESULT AddNodeDialogHandler::onOkButtonClick() {
 	nodeName[0] = nodeNameLength;
 	SendDlgItemMessage(this->hwnd, IDC_NODE_NAME_EDIT, EM_GETLINE, 0, (LPARAM)nodeName);
 	EndDialog(this->hwnd, (INT_PTR)nodeName);
-	
+
 	return TRUE;
 }
 

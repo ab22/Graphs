@@ -15,7 +15,7 @@ INT_PTR CALLBACK AddNodeDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM
 		result = dialogHandler->OnCommand((CommandWindowMessage*)message);
 		break;
 	case WM_DESTROY:
-		if (dialogHandler != NULL){
+		if (dialogHandler != NULL) {
 			delete dialogHandler;
 			dialogHandler = NULL;
 		}

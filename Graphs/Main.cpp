@@ -4,7 +4,7 @@ MainEventHandler *mainEventHandler = NULL;
 
 LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	WinMessageBase *message = NULL;
-	LRESULT			result  = 0;
+	LRESULT			result = 0;
 	switch (msg) {
 	case WM_CREATE:
 		message = new CreateWindowMessage(hwnd, msg, wParam, lParam);
@@ -25,7 +25,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return result;
-	default: 
+	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
@@ -63,7 +63,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char *lpCmdLine
 		0,
 		hInstance,
 		0
-	);
+		);
 	ShowWindow(hwnd, SW_MAXIMIZE);
 	UpdateWindow(hwnd);
 

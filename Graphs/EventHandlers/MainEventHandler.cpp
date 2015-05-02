@@ -49,7 +49,7 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 	else if (msg->buttonIdentifier == TOOLBAR_BUTTON::DELETE_NODE) {
 		return this->onToolbarDeleteNodeClick();
 	}
-	else if (msg->buttonIdentifier == TOOLBAR_BUTTON::EXIT){
+	else if (msg->buttonIdentifier == TOOLBAR_BUTTON::EXIT) {
 		return this->onToolbarExitClick();
 	}
 	return FALSE;
@@ -77,7 +77,7 @@ void MainEventHandler::createMainToolbar() {
 	HIMAGELIST	imageList = NULL;
 	TBBUTTON	tbButtons[3];
 	HWND		toolBar = NULL;
-	
+
 	toolBar = CreateWindowEx(
 		0,
 		TOOLBARCLASSNAME,
@@ -91,7 +91,7 @@ void MainEventHandler::createMainToolbar() {
 		NULL,
 		0,
 		NULL
-	);
+		);
 
 	imageList = ImageList_Create(
 		bitmapSize,
@@ -99,7 +99,7 @@ void MainEventHandler::createMainToolbar() {
 		ILC_COLOR16 | ILC_MASK,
 		numButtons,
 		0
-	);
+		);
 
 	SendMessage(toolBar, TB_SETIMAGELIST, (WPARAM)imageListId, (LPARAM)imageList);
 	SendMessage(toolBar, TB_LOADIMAGES, (WPARAM)IDB_STD_SMALL_COLOR, (LPARAM)HINST_COMMCTRL);
@@ -118,14 +118,14 @@ void MainEventHandler::createMainToolbar() {
 
 LRESULT MainEventHandler::onToolbarAddNodeClick() {
 	TCHAR*		nodeName;
-	
+
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DIALOG1), this->hwnd, AddNodeDialogProc);
 
 	if (nodeName != NULL) {
 		MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
 		delete nodeName;
 	}
-	else{
+	else {
 		MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 
-class WinMessageBase{
+class WinMessageBase {
 public:
 	HWND hwnd;
 	UINT msg;
