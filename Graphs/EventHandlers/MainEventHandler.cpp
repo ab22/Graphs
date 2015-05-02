@@ -72,10 +72,10 @@ BOOL MainEventHandler::initCommonVisualControls() {
 
 void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
+	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
 	const int   numButtons = 3;
 	const int   imageListId = 0;
-	HIMAGELIST  imageList = NULL;
 	TBBUTTON    tbButtons[3];
 	HWND        toolBar = NULL;
 
@@ -120,8 +120,7 @@ void MainEventHandler::createMainToolbar() {
 LRESULT MainEventHandler::onToolbarAddNodeClick() {
 	TCHAR* nodeName;
 
-	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DIALOG1), this->hwnd, AddNodeDialogProc);
-
+	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_NODE_DIALOG), this->hwnd, AddNodeDialogProc);
 	if (nodeName != NULL) {
 		MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
 		delete nodeName;
@@ -129,7 +128,6 @@ LRESULT MainEventHandler::onToolbarAddNodeClick() {
 	else {
 		MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
 	}
-
 	return TRUE;
 }
 

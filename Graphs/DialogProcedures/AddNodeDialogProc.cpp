@@ -1,5 +1,4 @@
 #include "AddNodeDialogProc.h"
-
 AddNodeDialogHandler *dialogHandler = NULL;
 
 INT_PTR CALLBACK AddNodeDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
