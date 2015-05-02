@@ -100,7 +100,6 @@
     <ClInclude Include="Infrastructure\Messages\WinMessageBase.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
