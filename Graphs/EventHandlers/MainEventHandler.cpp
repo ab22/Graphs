@@ -27,8 +27,8 @@ LRESULT MainEventHandler::OnCreate(CreateWindowMessage *msg) {
 }
 
 LRESULT MainEventHandler::OnPaint(PaintWindowMessage *msg) {
-	HDC         hdc;
 	PAINTSTRUCT ps;
+	HDC         hdc;
 
 	hdc = BeginPaint(msg->hwnd, &ps);
 	EndPaint(msg->hwnd, &ps);
