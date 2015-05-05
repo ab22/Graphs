@@ -6,6 +6,7 @@
 
 #include "../Infrastructure/Messages/WindowMessages.h"
 #include "../DialogProcedures/DeleteNodeDialogProc.h"
+#include "../DialogProcedures/AddVertexDialogProc.h"
 #include "../DialogProcedures/AddNodeDialogProc.h"
 #include "../Algorithms/Graphs.h"
 #include "../resource.h"
@@ -23,6 +24,8 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 enum TOOLBAR_BUTTON {
 	ADD_NODE,
 	DELETE_NODE,
+	ADD_VERTEX,
+	DELETE_VERTEX,
 	EXIT
 };
 
@@ -57,6 +60,8 @@ public:
 private:
 	LRESULT  onToolbarAddNodeClick();
 	LRESULT  onToolbarDeleteNodeClick();
+	LRESULT  onToolbarAddVertexClick();
+	LRESULT  onToolbarDeleteVertexClick();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	

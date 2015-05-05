@@ -80,8 +80,10 @@
   <ItemGroup>
     <ClCompile Include="Algorithms\Graphs.cpp" />
     <ClCompile Include="DialogProcedures\AddNodeDialogProc.cpp" />
+    <ClCompile Include="DialogProcedures\AddVertexDialogProc.cpp" />
     <ClCompile Include="DialogProcedures\DeleteNodeDialogProc.cpp" />
     <ClCompile Include="EventHandlers\AddNodeDialogHandler.cpp" />
+    <ClCompile Include="EventHandlers\AddVertexDialogHandler.cpp" />
     <ClCompile Include="EventHandlers\DeleteNodeDialogHandler.cpp" />
     <ClCompile Include="EventHandlers\MainEventHandler.cpp" />
     <ClCompile Include="Infrastructure\Messages\CommandWindowMessage.cpp" />
@@ -94,8 +96,10 @@
   <ItemGroup>
     <ClInclude Include="Algorithms\Graphs.h" />
     <ClInclude Include="DialogProcedures\AddNodeDialogProc.h" />
+    <ClInclude Include="DialogProcedures\AddVertexDialogProc.h" />
     <ClInclude Include="DialogProcedures\DeleteNodeDialogProc.h" />
     <ClInclude Include="EventHandlers\AddNodeDialogHandler.h" />
+    <ClInclude Include="EventHandlers\AddVertexDialogHandler.h" />
     <ClInclude Include="EventHandlers\DeleteNodeDialogHandler.h" />
     <ClInclude Include="EventHandlers\MainEventHandler.h" />
     <ClInclude Include="Infrastructure\Messages\CommandWindowMessage.h" />

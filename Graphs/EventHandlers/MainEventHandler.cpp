@@ -43,16 +43,18 @@ LRESULT MainEventHandler::OnResize(ResizeWindowMessage *msg) {
 }
 
 LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
-	if (msg->buttonIdentifier == TOOLBAR_BUTTON::ADD_NODE) {
+	switch (msg->buttonIdentifier) {
+	case TOOLBAR_BUTTON::ADD_NODE:
 		return this->onToolbarAddNodeClick();
-	}
-	else if (msg->buttonIdentifier == TOOLBAR_BUTTON::DELETE_NODE) {
+	case TOOLBAR_BUTTON::DELETE_NODE:
 		return this->onToolbarDeleteNodeClick();
-	}
-	else if (msg->buttonIdentifier == TOOLBAR_BUTTON::EXIT) {
+	case TOOLBAR_BUTTON::ADD_VERTEX:
+		return this->onToolbarAddVertexClick();
+	case TOOLBAR_BUTTON::EXIT:
 		return this->onToolbarExitClick();
 	}
-	return FALSE;
+
+	return TRUE;
 }
 
 void MainEventHandler::calculateDefaultFontSizes(HDC hdc) {
@@ -74,9 +76,9 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 3;
+	const int   numButtons = 5;
 	const int   imageListId = 0;
-	TBBUTTON    tbButtons[3];
+	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
 
 	toolBar = CreateWindowEx(
@@ -107,7 +109,9 @@ void MainEventHandler::createMainToolbar() {
 
 	tbButtons[0] = { MAKELONG(STD_FILENEW, imageListId), TOOLBAR_BUTTON::ADD_NODE, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)TEXT("Add Node") };
 	tbButtons[1] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::DELETE_NODE, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Delete Node" };
-	tbButtons[2] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[2] = { MAKELONG(STD_FILENEW, imageListId), TOOLBAR_BUTTON::ADD_VERTEX, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Add Vertex" };
+	tbButtons[3] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::DELETE_NODE, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Delete Vertex" };
+	tbButtons[4] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -140,6 +144,13 @@ LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
 	}
 	MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
 	delete nodeName;
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarAddVertexClick() {
+	TCHAR* nodeName;
+
+	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_VERTEX_DIALOG), this->hwnd, AddVertexDialogProc);
 	return TRUE;
 }
 
