@@ -131,7 +131,15 @@ LRESULT MainEventHandler::onToolbarAddNodeClick() {
 }
 
 LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
-	MessageBox(this->hwnd, TEXT("Show delete node dialog!"), TEXT("Delete node"), MB_OK | MB_ICONINFORMATION);
+	TCHAR* nodeName;
+
+	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DELETE_NODE_DIALOG), this->hwnd, DeleteNodeDialogProc);
+	if (nodeName == NULL) {
+		MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
+		return TRUE;
+	}
+	MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
+	delete nodeName;
 	return TRUE;
 }
 

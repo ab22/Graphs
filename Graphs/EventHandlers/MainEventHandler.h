@@ -5,6 +5,7 @@
 #include <CommCtrl.h>
 
 #include "../Infrastructure/Messages/WindowMessages.h"
+#include "../DialogProcedures/DeleteNodeDialogProc.h"
 #include "../DialogProcedures/AddNodeDialogProc.h"
 #include "../Algorithms/Graphs.h"
 #include "../resource.h"
@@ -35,7 +36,7 @@ class MainEventHandler {
 private:
 	MainWindowControls  mainWindowControls;
 	HINSTANCE           hInstance;
-	Grafos              graphs;
+	Graphs              graphs;
 	HWND                hwnd;
 	int                 charWidth;
 	int                 charHeight;
