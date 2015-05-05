@@ -151,6 +151,8 @@ LRESULT MainEventHandler::onToolbarAddVertexClick() {
 	TCHAR* nodeName;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_VERTEX_DIALOG), this->hwnd, AddVertexDialogProc);
+	delete nodeName;
+
 	return TRUE;
 }
 
