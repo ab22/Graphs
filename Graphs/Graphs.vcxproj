@@ -82,9 +82,11 @@
     <ClCompile Include="DialogProcedures\AddNodeDialogProc.cpp" />
     <ClCompile Include="DialogProcedures\AddVertexDialogProc.cpp" />
     <ClCompile Include="DialogProcedures\DeleteNodeDialogProc.cpp" />
+    <ClCompile Include="DialogProcedures\DeleteVertexDialogProc.cpp" />
     <ClCompile Include="EventHandlers\AddNodeDialogHandler.cpp" />
     <ClCompile Include="EventHandlers\AddVertexDialogHandler.cpp" />
     <ClCompile Include="EventHandlers\DeleteNodeDialogHandler.cpp" />
+    <ClCompile Include="EventHandlers\DeleteVertexDialogHandler.cpp" />
     <ClCompile Include="EventHandlers\MainEventHandler.cpp" />
     <ClCompile Include="Infrastructure\Messages\CommandWindowMessage.cpp" />
     <ClCompile Include="Infrastructure\Messages\CreateWindowMessage.cpp" />
@@ -98,9 +100,11 @@
     <ClInclude Include="DialogProcedures\AddNodeDialogProc.h" />
     <ClInclude Include="DialogProcedures\AddVertexDialogProc.h" />
     <ClInclude Include="DialogProcedures\DeleteNodeDialogProc.h" />
+    <ClInclude Include="DialogProcedures\DeleteVertexDialogProc.h" />
     <ClInclude Include="EventHandlers\AddNodeDialogHandler.h" />
     <ClInclude Include="EventHandlers\AddVertexDialogHandler.h" />
     <ClInclude Include="EventHandlers\DeleteNodeDialogHandler.h" />
+    <ClInclude Include="EventHandlers\DeleteVertexDialogHandler.h" />
     <ClInclude Include="EventHandlers\MainEventHandler.h" />
     <ClInclude Include="Infrastructure\Messages\CommandWindowMessage.h" />
     <ClInclude Include="Infrastructure\Messages\CreateWindowMessage.h" />

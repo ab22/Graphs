@@ -5,6 +5,8 @@
 #include <CommCtrl.h>
 
 #include "../Infrastructure/Messages/WindowMessages.h"
+
+#include "../DialogProcedures/DeleteVertexDialogProc.h"
 #include "../DialogProcedures/DeleteNodeDialogProc.h"
 #include "../DialogProcedures/AddVertexDialogProc.h"
 #include "../DialogProcedures/AddNodeDialogProc.h"
