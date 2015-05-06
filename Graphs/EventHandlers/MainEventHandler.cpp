@@ -34,6 +34,7 @@ LRESULT MainEventHandler::OnPaint(PaintWindowMessage *msg) {
 	HDC         hdc;
 
 	hdc = BeginPaint(msg->hwnd, &ps);
+	this->drawNodes(hdc);
 	EndPaint(msg->hwnd, &ps);
 
 	return 0;
@@ -70,6 +71,7 @@ LRESULT MainEventHandler::OnLeftMouseButtonClick(LeftMouseButtonDownMessage* msg
 			MessageBox(hwnd, TEXT("Node name already exists!"), 0, MB_OK | MB_ICONERROR);
 		}
 		else {
+			InvalidateRect(hwnd, 0, true);
 			MessageBox(hwnd, TEXT("Node Added!"), 0, MB_OK);
 		}
 	}
@@ -200,4 +202,50 @@ bool MainEventHandler::addNode(int x, int y) {
 	}
 	this->addingNode = false;
 	return result;
+}
+
+void MainEventHandler::drawNodes(HDC hdc) {
+	HRGN hRgn = NULL;
+	for (int x = 0; x < this->graphs.nVertices; x++) {
+		for (int y = 0; y < this->graphs.nVertices; y++) {
+			if (this->graphs.aristas[x][y] == 1) {
+				MoveToEx(hdc, this->graphs.cc[y].x + 10, this->graphs.cc[y].y + 10, 0);
+				LineTo(hdc, this->graphs.cc[x].x + 10, this->graphs.cc[x].y - 10);
+				hRgn = CreateRectRgn(this->graphs.cc[x].x + 10, this->graphs.cc[x].y - 10, this->graphs.cc[x].x + 15, this->graphs.cc[x].y + 15);
+				FillRgn(hdc, hRgn, (HBRUSH)GetStockObject(LTGRAY_BRUSH));
+				int dPosX, dPosY;
+				if (this->graphs.cc[x].x >= this->graphs.cc[y].x) {
+					dPosX = (this->graphs.cc[x].x - this->graphs.cc[y].x) / 2;
+					dPosX = this->graphs.cc[x].x - dPosX;
+					dPosX -= this->charWidth * 2;
+				}
+				else {
+					dPosX = (this->graphs.cc[y].x - this->graphs.cc[x].x) / 2;
+					dPosX = this->graphs.cc[x].x + dPosX;
+					dPosX += this->charWidth * 2;
+				}
+				if (this->graphs.cc[x].y >= this->graphs.cc[x].y) {
+					dPosY = (this->graphs.cc[x].y - this->graphs.cc[y].y) / 2;
+					dPosY = this->graphs.cc[x].y - dPosY;
+				}
+				else {
+					dPosY = (this->graphs.cc[y].y - this->graphs.cc[x].y) / 2;
+					dPosY = this->graphs.cc[x].y + dPosY;
+				}
+
+				WCHAR *distancia = new WCHAR[10];
+				wsprintf(distancia, TEXT("%d"), this->graphs.distancias[x][y]);
+				TextOut(hdc, dPosX + 1, dPosY + 1, distancia, lstrlen(distancia));
+
+				delete[] distancia;
+				DeleteObject(hRgn);
+				hRgn = NULL;
+			}
+		}
+	}
+
+	for (int i = 0; i < this->graphs.nVertices; i++) {
+		Ellipse(hdc, this->graphs.cc[i].x - 1, this->graphs.cc[i].y - 1, this->graphs.cc[i].x + 25, this->graphs.cc[i].y + 25);
+		TextOut(hdc, this->graphs.cc[i].x + 8, this->graphs.cc[i].y + 5, this->graphs.vertices[i], 1);
+	}
 }
