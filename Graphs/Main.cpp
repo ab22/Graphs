@@ -14,6 +14,10 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		message = new CommandWindowMessage(hwnd, msg, wParam, lParam);
 		result = mainEventHandler->OnCommand((CommandWindowMessage *)message);
 		break;
+	case WM_LBUTTONDOWN:
+		message = new LeftMouseButtonDownMessage(hwnd, msg, wParam, lParam);
+		result = mainEventHandler->OnLeftMouseButtonClick((LeftMouseButtonDownMessage*)message);
+		break;
 	case WM_PAINT:
 		message = new PaintWindowMessage(hwnd, msg, wParam, lParam);
 		result = mainEventHandler->OnPaint((PaintWindowMessage *)message);

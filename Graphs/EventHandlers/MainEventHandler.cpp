@@ -6,6 +6,9 @@ MainEventHandler::MainEventHandler() {
 	this->hInstance = NULL;
 	this->charHeight = 0;
 	this->charWidth = 0;
+
+	this->addingNode = false;
+	this->tmpNodeName = NULL;
 }
 
 MainEventHandler::~MainEventHandler() {
@@ -57,6 +60,20 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 	}
 
 	return TRUE;
+}
+
+LRESULT MainEventHandler::OnLeftMouseButtonClick(LeftMouseButtonDownMessage* msg) {
+	if (this->addingNode) {
+		bool result = this->addNode(msg->xCoordinate, msg->yCoordinate);
+		// if node already exists with that name
+		if (!result) {
+			MessageBox(hwnd, TEXT("Node name already exists!"), 0, MB_OK | MB_ICONERROR);
+		}
+		else {
+			MessageBox(hwnd, TEXT("Node Added!"), 0, MB_OK);
+		}
+	}
+	return 0;
 }
 
 void MainEventHandler::calculateDefaultFontSizes(HDC hdc) {
@@ -132,7 +149,9 @@ LRESULT MainEventHandler::onToolbarAddNodeClick() {
 		return TRUE;
 	}
 	MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
-	delete nodeName;
+	
+	this->addingNode = true;
+	this->tmpNodeName = nodeName;
 	return TRUE;
 }
 
@@ -145,7 +164,7 @@ LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
 		return TRUE;
 	}
 	MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
-	delete nodeName;
+	delete[] nodeName;
 	return TRUE;
 }
 
@@ -153,7 +172,7 @@ LRESULT MainEventHandler::onToolbarAddVertexClick() {
 	TCHAR* nodeName;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_VERTEX_DIALOG), this->hwnd, AddVertexDialogProc);
-	delete nodeName;
+	delete[] nodeName;
 
 	return TRUE;
 }
@@ -162,7 +181,7 @@ LRESULT MainEventHandler::onToolbarDeleteVertexClick() {
 	TCHAR* nodeName;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DELETE_VERTEX_DIALOG), this->hwnd, DeleteVertexDialogProc);
-	delete nodeName;
+	delete[] nodeName;
 
 	return TRUE;
 }
@@ -170,4 +189,15 @@ LRESULT MainEventHandler::onToolbarDeleteVertexClick() {
 LRESULT MainEventHandler::onToolbarExitClick() {
 	SendMessage(this->hwnd, WM_CLOSE, 0, 0);
 	return TRUE;
+}
+
+bool MainEventHandler::addNode(int x, int y) {
+	bool result = graphs.agregar(this->tmpNodeName, x, y);
+	// if node already exists with that name
+	if (!result) {
+		delete[] this->tmpNodeName;
+		this->tmpNodeName = NULL;		
+	}
+	this->addingNode = false;
+	return result;
 }

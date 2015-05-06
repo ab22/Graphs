@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <CommCtrl.h>
+#include <tchar.h>
 
 #include "../Infrastructure/Messages/WindowMessages.h"
 
@@ -46,6 +47,9 @@ private:
 	int                 charWidth;
 	int                 charHeight;
 
+	TCHAR*              tmpNodeName;
+	bool                addingNode;
+
 public:
 	MainEventHandler();
 	~MainEventHandler();
@@ -58,6 +62,8 @@ public:
 	LRESULT OnResize(ResizeWindowMessage*);
 	// WM_COMMAND: Called when a button, menu button or accelerator was triggered
 	LRESULT OnCommand(CommandWindowMessage*);
+	// WM_LBUTTONDOWN: Called when the left mouse button is clicked
+	LRESULT OnLeftMouseButtonClick(LeftMouseButtonDownMessage*);
 
 private:
 	LRESULT  onToolbarAddNodeClick();
@@ -68,5 +74,7 @@ private:
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	
 	void     createMainToolbar();
+
+	bool     addNode(int, int);
 	
 };

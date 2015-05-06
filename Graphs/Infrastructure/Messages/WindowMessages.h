@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "CreateWindowMessage.h"
-#include "PaintWindowMessage.h"
-#include "ResizeWindowMessage.h"
+#include "LeftMouseButtonDownMessage.h"
 #include "CommandWindowMessage.h"
+#include "CreateWindowMessage.h"
+#include "ResizeWindowMessage.h"
+#include "PaintWindowMessage.h"
