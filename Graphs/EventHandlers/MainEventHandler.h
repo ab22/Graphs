@@ -16,7 +16,7 @@
 
 
 // Manifest to use the latest CommCtl32 library which
-// enables the newest windows' Visual styles
+// enables the newest visual styles for windows.
 // ----------------------------------------------------
 // ref: https://msdn.microsoft.com/en-us/library/windows/desktop/bb773175%28v=vs.85%29.aspx
 #pragma comment(linker,"\"/manifestdependency:type='win32' \
