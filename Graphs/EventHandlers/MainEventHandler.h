@@ -74,7 +74,8 @@ private:
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	
 	void     createMainToolbar();
-	bool     addNode(int, int);
 	void     drawNodes(HDC);
+	bool     addNode(int, int);
+	bool     addVertex(TCHAR*, TCHAR*, TCHAR*);
 	
 };

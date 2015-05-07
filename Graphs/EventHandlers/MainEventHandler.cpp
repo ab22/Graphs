@@ -147,10 +147,8 @@ LRESULT MainEventHandler::onToolbarAddNodeClick() {
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_NODE_DIALOG), this->hwnd, AddNodeDialogProc);
 	if (nodeName == NULL) {
-		MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
 		return TRUE;
 	}
-	MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
 	
 	this->addingNode = true;
 	this->tmpNodeName = nodeName;
@@ -159,22 +157,40 @@ LRESULT MainEventHandler::onToolbarAddNodeClick() {
 
 LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
 	TCHAR* nodeName;
+	int    result;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DELETE_NODE_DIALOG), this->hwnd, DeleteNodeDialogProc);
 	if (nodeName == NULL) {
-		MessageBox(hwnd, TEXT("No node was specified!"), TEXT("No new node!"), MB_OK | MB_ICONINFORMATION);
 		return TRUE;
 	}
-	MessageBox(hwnd, nodeName, TEXT("New node name"), MB_OK | MB_ICONINFORMATION);
+
+	result = this->graphs.borrar(nodeName);
+	if (result == -1) {
+		MessageBox(hwnd, TEXT("Node does not exists!"), TEXT("Node not found"), MB_OK | MB_ICONERROR);
+		return  TRUE;
+	}
+	
+	InvalidateRect(hwnd, 0, true);
 	delete[] nodeName;
 	return TRUE;
 }
 
 LRESULT MainEventHandler::onToolbarAddVertexClick() {
-	TCHAR* nodeName;
+	const int     amountValues = 3;
+	TCHAR**       values;
+	bool          vertexAdded;
+	
 
-	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_VERTEX_DIALOG), this->hwnd, AddVertexDialogProc);
-	delete[] nodeName;
+	values = (TCHAR**)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_VERTEX_DIALOG), this->hwnd, AddVertexDialogProc);
+
+	vertexAdded = this->addVertex(values[0], values[1], values[2]);
+	if (!vertexAdded) {
+		MessageBox(this->hwnd, TEXT("Invalid vertices!"), TEXT("Error"), MB_OK | MB_ICONERROR);
+	}
+	
+	for (int i = 0; i < amountValues; i++)
+		delete[] values[i];
+	delete[] values;
 
 	return TRUE;
 }
@@ -248,4 +264,12 @@ void MainEventHandler::drawNodes(HDC hdc) {
 		Ellipse(hdc, this->graphs.cc[i].x - 1, this->graphs.cc[i].y - 1, this->graphs.cc[i].x + 25, this->graphs.cc[i].y + 25);
 		TextOut(hdc, this->graphs.cc[i].x + 8, this->graphs.cc[i].y + 5, this->graphs.vertices[i], 1);
 	}
+}
+
+bool MainEventHandler::addVertex(TCHAR* source, TCHAR* destination, TCHAR* distance) {
+	bool vertexAdded = this->graphs.agregarArista(source, destination, distance);
+
+	if (vertexAdded)
+		InvalidateRect(this->hwnd, 0, true);
+	return vertexAdded;
 }
