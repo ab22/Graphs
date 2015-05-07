@@ -19,4 +19,6 @@ public:
 private:
 	LRESULT onOkButtonClick();
 	LRESULT onCancelButtonClick();
+
+	TCHAR*  getTextFromInput(int);
 };
