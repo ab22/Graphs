@@ -178,8 +178,7 @@ LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
 LRESULT MainEventHandler::onToolbarAddVertexClick() {
 	const int     amountValues = 3;
 	TCHAR**       values;
-	bool          vertexAdded;
-	
+	bool          vertexAdded;	
 
 	values = (TCHAR**)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_VERTEX_DIALOG), this->hwnd, AddVertexDialogProc);
 	if (values == NULL)
@@ -201,7 +200,6 @@ LRESULT MainEventHandler::onToolbarDeleteVertexClick() {
 	const int     amountValues = 2;
 	TCHAR**       values;
 	bool          vertexDeleted;
-
 
 	values = (TCHAR**)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DELETE_VERTEX_DIALOG), this->hwnd, DeleteVertexDialogProc);
 	if (values == NULL)
@@ -283,7 +281,6 @@ void MainEventHandler::drawNodes(HDC hdc) {
 
 bool MainEventHandler::addVertex(TCHAR* source, TCHAR* destination, TCHAR* distance) {
 	bool vertexAdded = this->graphs.agregarArista(source, destination, distance);
-
 	if (vertexAdded)
 		InvalidateRect(this->hwnd, 0, true);
 	return vertexAdded;
