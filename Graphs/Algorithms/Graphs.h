@@ -52,7 +52,7 @@ public:
 	bool agregar(WCHAR*, int, int);
 	bool borrar(WCHAR*);
 	bool agregarArista(WCHAR*, WCHAR*, WCHAR*);
-	bool borrarArista(WCHAR*, WCHAR*, WCHAR*);
+	bool borrarArista(WCHAR*, WCHAR*);
 	int buscarVertice(WCHAR *vertice);
 	void imprimir();
 	bool buscarCirculo(int, int, circles*);

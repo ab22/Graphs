@@ -216,7 +216,7 @@ bool Graphs::agregarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
 	return false;
 }
 
-bool Graphs::borrarArista(WCHAR *origen, WCHAR *destino, WCHAR *distancia) {
+bool Graphs::borrarArista(WCHAR *origen, WCHAR *destino) {
 	if (origen[0] == destino[0])
 		return false;
 	int origin = buscarVertice(origen);

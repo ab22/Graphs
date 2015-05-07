@@ -273,3 +273,10 @@ bool MainEventHandler::addVertex(TCHAR* source, TCHAR* destination, TCHAR* dista
 		InvalidateRect(this->hwnd, 0, true);
 	return vertexAdded;
 }
+
+bool MainEventHandler::deleteVertex(TCHAR* source, TCHAR* destination) {
+	bool deleted = this->graphs.borrarArista(source, destination);
+	if (deleted)
+		InvalidateRect(this->hwnd, 0, true);
+	return deleted;
+}
