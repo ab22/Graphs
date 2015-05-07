@@ -182,6 +182,8 @@ LRESULT MainEventHandler::onToolbarAddVertexClick() {
 	
 
 	values = (TCHAR**)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_VERTEX_DIALOG), this->hwnd, AddVertexDialogProc);
+	if (values == NULL)
+		return TRUE;
 
 	vertexAdded = this->addVertex(values[0], values[1], values[2]);
 	if (!vertexAdded) {
@@ -196,10 +198,23 @@ LRESULT MainEventHandler::onToolbarAddVertexClick() {
 }
 
 LRESULT MainEventHandler::onToolbarDeleteVertexClick() {
-	TCHAR* nodeName;
+	const int     amountValues = 2;
+	TCHAR**       values;
+	bool          vertexDeleted;
 
-	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DELETE_VERTEX_DIALOG), this->hwnd, DeleteVertexDialogProc);
-	delete[] nodeName;
+
+	values = (TCHAR**)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DELETE_VERTEX_DIALOG), this->hwnd, DeleteVertexDialogProc);
+	if (values == NULL)
+		return TRUE;
+
+	vertexDeleted = this->deleteVertex(values[0], values[1]);
+	if (!vertexDeleted) {
+		MessageBox(this->hwnd, TEXT("Invalid vertices!"), TEXT("Error"), MB_OK | MB_ICONERROR);
+	}
+
+	for (int i = 0; i < amountValues; i++)
+		delete[] values[i];
+	delete[] values;
 
 	return TRUE;
 }

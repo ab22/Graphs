@@ -77,6 +77,5 @@ private:
 	void     drawNodes(HDC);
 	bool     addNode(int, int);
 	bool     addVertex(TCHAR*, TCHAR*, TCHAR*);
-	bool     deleteVertex(TCHAR*, TCHAR*)
-	
+	bool     deleteVertex(TCHAR*, TCHAR*);	
 };
