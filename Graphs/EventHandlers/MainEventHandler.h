@@ -32,6 +32,7 @@ enum TOOLBAR_BUTTON {
 	ORGANIZE_NAME,
 	ORGANIZE_TOPOLOGY,
 	IS_ACYCLIC,
+	SHOW_DIJKSTRA_LABELS,
 	EXIT
 };
 
@@ -51,8 +52,9 @@ private:
 	int                 charHeight;
 
 	TCHAR*              tmpNodeName;
-	bool                addingNode;
+	bool                showDijkstraLabels;
 	bool                organizeByName;
+	bool                addingNode;	
 
 public:
 	MainEventHandler();
@@ -76,6 +78,7 @@ private:
 	LRESULT  onToolbarDeleteVertexClick();
 	LRESULT  onToolbarOrganizeByNameClick();
 	LRESULT  onToolbarOrganizeByTopologyClick();
+	LRESULT  onToolbarShowDijkstraLabelsClick();
 	LRESULT  onToolbarCheckAcyclicity();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();

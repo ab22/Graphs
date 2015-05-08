@@ -10,6 +10,7 @@ MainEventHandler::MainEventHandler() {
 	this->addingNode = false;
 	this->tmpNodeName = NULL;
 	this->organizeByName = true;
+	this->showDijkstraLabels = false;
 }
 
 MainEventHandler::~MainEventHandler() {
@@ -63,6 +64,8 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 		return this->onToolbarOrganizeByTopologyClick();
 	case TOOLBAR_BUTTON::IS_ACYCLIC:
 		return this->onToolbarCheckAcyclicity();
+	case TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS:
+		return this->onToolbarShowDijkstraLabelsClick();
 	case TOOLBAR_BUTTON::EXIT:
 		return this->onToolbarExitClick();
 	}
@@ -103,7 +106,7 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 8;
+	const int   numButtons = 9;
 	const int   imageListId = 0;
 	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
@@ -141,7 +144,8 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[4] = { MAKELONG(STD_FILENEW, imageListId), TOOLBAR_BUTTON::ORGANIZE_NAME, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Name" };
 	tbButtons[5] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Topology" };
 	tbButtons[6] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::IS_ACYCLIC, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Is Acyclic" };
-	tbButtons[7] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[7] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show/Hide Dijkstra" };
+	tbButtons[8] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -238,6 +242,12 @@ LRESULT MainEventHandler::onToolbarOrganizeByTopologyClick() {
 	if (!this->organizeByName)
 		return TRUE;
 	this->organizeByName = false;
+	InvalidateRect(this->hwnd, 0, true);
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarShowDijkstraLabelsClick() {
+	this->showDijkstraLabels = !this->showDijkstraLabels;
 	InvalidateRect(this->hwnd, 0, true);
 	return TRUE;
 }
@@ -342,6 +352,20 @@ void MainEventHandler::drawNodes(HDC hdc) {
 			delete[] nodeName;
 		}
 		
+	}
+
+	if (this->showDijkstraLabels) {
+		const int labelsLength = 32;
+		Dijkstra* dijkstra = new Dijkstra[this->graphs.nVertices];
+		TCHAR*    label = new TCHAR[labelsLength];
+
+		this->graphs.algoritmoDijkstra(dijkstra);
+		for (int i = 0; i < this->graphs.nVertices; i++) {
+			_stprintf_s(label, labelsLength, TEXT("[%d,%c](%d)"), dijkstra[i].distancia, this->graphs.vertices[dijkstra[i].procede][0], dijkstra[i].iteracion);
+			TextOut(hdc, this->graphs.cc[i].x + 20, this->graphs.cc[i].y + 20, label, _tcslen(label));
+		}
+		delete[] label;
+		delete[] dijkstra;
 	}
 }
 
