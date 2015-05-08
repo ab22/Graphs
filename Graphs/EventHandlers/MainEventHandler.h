@@ -31,6 +31,7 @@ enum TOOLBAR_BUTTON {
 	DELETE_VERTEX,
 	ORGANIZE_NAME,
 	ORGANIZE_TOPOLOGY,
+	IS_ACYCLIC,
 	EXIT
 };
 
@@ -75,6 +76,7 @@ private:
 	LRESULT  onToolbarDeleteVertexClick();
 	LRESULT  onToolbarOrganizeByNameClick();
 	LRESULT  onToolbarOrganizeByTopologyClick();
+	LRESULT  onToolbarCheckAcyclicity();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	

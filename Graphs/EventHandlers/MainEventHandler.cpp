@@ -61,6 +61,8 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 		return this->onToolbarOrganizeByNameClick();
 	case TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY:
 		return this->onToolbarOrganizeByTopologyClick();
+	case TOOLBAR_BUTTON::IS_ACYCLIC:
+		return this->onToolbarCheckAcyclicity();
 	case TOOLBAR_BUTTON::EXIT:
 		return this->onToolbarExitClick();
 	}
@@ -101,7 +103,7 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 7;
+	const int   numButtons = 8;
 	const int   imageListId = 0;
 	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
@@ -138,7 +140,8 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[3] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::DELETE_VERTEX, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Delete Vertex" };
 	tbButtons[4] = { MAKELONG(STD_FILENEW, imageListId), TOOLBAR_BUTTON::ORGANIZE_NAME, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Name" };
 	tbButtons[5] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Topology" };
-	tbButtons[6] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[6] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::IS_ACYCLIC, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Is Acyclic" };
+	tbButtons[7] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -236,6 +239,26 @@ LRESULT MainEventHandler::onToolbarOrganizeByTopologyClick() {
 		return TRUE;
 	this->organizeByName = false;
 	InvalidateRect(this->hwnd, 0, true);
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarCheckAcyclicity() {
+	const int  messageSize = 64;
+	TCHAR*     message = new TCHAR[messageSize];
+
+	if (this->graphs.nVertices == 0) {
+		_stprintf_s(message, messageSize, TEXT("There are no nodes added!"));
+	}
+	else if (this->graphs.esAciclico()) {
+		_stprintf_s(message, messageSize, TEXT("No infinite cycles!"));
+	}
+	else {
+		_stprintf_s(message, messageSize, TEXT("Graph contains infinite cycles!"));
+	}
+
+	MessageBox(this->hwnd, message, TEXT("Acyclicity"), MB_OK | MB_ICONINFORMATION);
+	delete[] message;
+
 	return TRUE;
 }
 
