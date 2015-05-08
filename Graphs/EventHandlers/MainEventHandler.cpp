@@ -257,6 +257,12 @@ bool MainEventHandler::addNode(int x, int y) {
 }
 
 void MainEventHandler::drawNodes(HDC hdc) {
+	/*
+		Old code to draw the nodes.
+		TODO: 
+			Refactor ._. 
+	*/
+
 	HRGN hRgn = NULL;
 
 	if (!this->organizeByName) {
