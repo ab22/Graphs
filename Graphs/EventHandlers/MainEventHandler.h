@@ -33,6 +33,7 @@ enum TOOLBAR_BUTTON {
 	ORGANIZE_TOPOLOGY,
 	IS_ACYCLIC,
 	SHOW_DIJKSTRA_LABELS,
+	EULER_LOOP,
 	EXIT
 };
 
@@ -79,7 +80,8 @@ private:
 	LRESULT  onToolbarOrganizeByNameClick();
 	LRESULT  onToolbarOrganizeByTopologyClick();
 	LRESULT  onToolbarShowDijkstraLabelsClick();
-	LRESULT  onToolbarCheckAcyclicity();
+	LRESULT  onToolbarCheckAcyclicityClick();
+	LRESULT  onToolbarEulerLoopClick();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	

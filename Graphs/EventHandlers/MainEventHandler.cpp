@@ -63,9 +63,11 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 	case TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY:
 		return this->onToolbarOrganizeByTopologyClick();
 	case TOOLBAR_BUTTON::IS_ACYCLIC:
-		return this->onToolbarCheckAcyclicity();
+		return this->onToolbarCheckAcyclicityClick();
 	case TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS:
 		return this->onToolbarShowDijkstraLabelsClick();
+	case TOOLBAR_BUTTON::EULER_LOOP:
+		return this->onToolbarEulerLoopClick();
 	case TOOLBAR_BUTTON::EXIT:
 		return this->onToolbarExitClick();
 	}
@@ -106,7 +108,7 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 9;
+	const int   numButtons = 10;
 	const int   imageListId = 0;
 	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
@@ -145,7 +147,8 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[5] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Topology" };
 	tbButtons[6] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::IS_ACYCLIC, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Is Acyclic" };
 	tbButtons[7] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show/Hide Dijkstra" };
-	tbButtons[8] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[8] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::EULER_LOOP, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Euler Loop" };
+	tbButtons[9] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -252,7 +255,7 @@ LRESULT MainEventHandler::onToolbarShowDijkstraLabelsClick() {
 	return TRUE;
 }
 
-LRESULT MainEventHandler::onToolbarCheckAcyclicity() {
+LRESULT MainEventHandler::onToolbarCheckAcyclicityClick() {
 	const int  messageSize = 64;
 	TCHAR*     message = new TCHAR[messageSize];
 
@@ -268,6 +271,11 @@ LRESULT MainEventHandler::onToolbarCheckAcyclicity() {
 
 	MessageBox(this->hwnd, message, TEXT("Acyclicity"), MB_OK | MB_ICONINFORMATION);
 	delete[] message;
+
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarEulerLoopClick() {
 
 	return TRUE;
 }
