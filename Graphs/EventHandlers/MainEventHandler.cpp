@@ -75,10 +75,8 @@ LRESULT MainEventHandler::OnLeftMouseButtonClick(LeftMouseButtonDownMessage* msg
 		if (!result) {
 			MessageBox(hwnd, TEXT("Node name already exists!"), 0, MB_OK | MB_ICONERROR);
 		}
-		else {
+		else 
 			InvalidateRect(hwnd, 0, true);
-			MessageBox(hwnd, TEXT("Node Added!"), 0, MB_OK);
-		}
 	}
 	return 0;
 }
@@ -103,7 +101,7 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 5;
+	const int   numButtons = 7;
 	const int   imageListId = 0;
 	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
@@ -138,7 +136,9 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[1] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::DELETE_NODE, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Delete Node" };
 	tbButtons[2] = { MAKELONG(STD_FILENEW, imageListId), TOOLBAR_BUTTON::ADD_VERTEX, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Add Vertex" };
 	tbButtons[3] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::DELETE_VERTEX, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Delete Vertex" };
-	tbButtons[4] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[4] = { MAKELONG(STD_FILENEW, imageListId), TOOLBAR_BUTTON::ORGANIZE_NAME, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Name" };
+	tbButtons[5] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Topology" };
+	tbButtons[6] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -259,6 +259,10 @@ bool MainEventHandler::addNode(int x, int y) {
 void MainEventHandler::drawNodes(HDC hdc) {
 	HRGN hRgn = NULL;
 
+	if (!this->organizeByName) {
+		graphs.recursoTopologico();
+	}
+
 	for (int x = 0; x < this->graphs.nVertices; x++) {
 		for (int y = 0; y < this->graphs.nVertices; y++) {
 			if (this->graphs.aristas[x][y] == 1) {
@@ -299,7 +303,16 @@ void MainEventHandler::drawNodes(HDC hdc) {
 
 	for (int i = 0; i < this->graphs.nVertices; i++) {
 		Ellipse(hdc, this->graphs.cc[i].x - 1, this->graphs.cc[i].y - 1, this->graphs.cc[i].x + 25, this->graphs.cc[i].y + 25);
-		TextOut(hdc, this->graphs.cc[i].x + 8, this->graphs.cc[i].y + 5, this->graphs.vertices[i], 1);
+		if (this->organizeByName) {
+			TextOut(hdc, this->graphs.cc[i].x + 8, this->graphs.cc[i].y + 5, this->graphs.vertices[i], 1);
+		}
+		else {
+			TCHAR *nodeName = new TCHAR[10];
+			_stprintf_s(nodeName, 10, TEXT("%d"), graphs.topologia[i]);
+			TextOut(hdc, graphs.cc[i].x + 8, graphs.cc[i].y + 5, nodeName, _tcslen(nodeName));
+			delete[] nodeName;
+		}
+		
 	}
 }
 
