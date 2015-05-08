@@ -29,6 +29,8 @@ enum TOOLBAR_BUTTON {
 	DELETE_NODE,
 	ADD_VERTEX,
 	DELETE_VERTEX,
+	ORGANIZE_NAME,
+	ORGANIZE_TOPOLOGY,
 	EXIT
 };
 
@@ -49,6 +51,7 @@ private:
 
 	TCHAR*              tmpNodeName;
 	bool                addingNode;
+	bool                organizeByName;
 
 public:
 	MainEventHandler();
@@ -70,6 +73,8 @@ private:
 	LRESULT  onToolbarDeleteNodeClick();
 	LRESULT  onToolbarAddVertexClick();
 	LRESULT  onToolbarDeleteVertexClick();
+	LRESULT  onToolbarOrganizeByNameClick();
+	LRESULT  onToolbarOrganizeByTopologyClick();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	

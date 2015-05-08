@@ -9,6 +9,7 @@ MainEventHandler::MainEventHandler() {
 
 	this->addingNode = false;
 	this->tmpNodeName = NULL;
+	this->organizeByName = true;
 }
 
 MainEventHandler::~MainEventHandler() {
@@ -56,6 +57,10 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 		return this->onToolbarAddVertexClick();
 	case TOOLBAR_BUTTON::DELETE_VERTEX:
 		return this->onToolbarDeleteVertexClick();
+	case TOOLBAR_BUTTON::ORGANIZE_NAME:
+		return this->onToolbarOrganizeByNameClick();
+	case TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY:
+		return this->onToolbarOrganizeByTopologyClick();
 	case TOOLBAR_BUTTON::EXIT:
 		return this->onToolbarExitClick();
 	}
@@ -88,6 +93,7 @@ void MainEventHandler::calculateDefaultFontSizes(HDC hdc) {
 
 BOOL MainEventHandler::initCommonVisualControls() {
 	INITCOMMONCONTROLSEX	commControls;
+
 	commControls.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	commControls.dwICC = ICC_STANDARD_CLASSES | ICC_BAR_CLASSES;
 	return InitCommonControlsEx(&commControls);
@@ -217,6 +223,22 @@ LRESULT MainEventHandler::onToolbarDeleteVertexClick() {
 	return TRUE;
 }
 
+LRESULT MainEventHandler::onToolbarOrganizeByNameClick() {
+	if (this->organizeByName)
+		return TRUE;
+	this->organizeByName = true;
+	InvalidateRect(this->hwnd, 0, true);
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarOrganizeByTopologyClick() {
+	if (!this->organizeByName)
+		return TRUE;
+	this->organizeByName = false;
+	InvalidateRect(this->hwnd, 0, true);
+	return TRUE;
+}
+
 LRESULT MainEventHandler::onToolbarExitClick() {
 	SendMessage(this->hwnd, WM_CLOSE, 0, 0);
 	return TRUE;
@@ -224,6 +246,7 @@ LRESULT MainEventHandler::onToolbarExitClick() {
 
 bool MainEventHandler::addNode(int x, int y) {
 	bool result = graphs.agregar(this->tmpNodeName, x, y);
+
 	// if node already exists with that name
 	if (!result) {
 		delete[] this->tmpNodeName;
@@ -235,6 +258,7 @@ bool MainEventHandler::addNode(int x, int y) {
 
 void MainEventHandler::drawNodes(HDC hdc) {
 	HRGN hRgn = NULL;
+
 	for (int x = 0; x < this->graphs.nVertices; x++) {
 		for (int y = 0; y < this->graphs.nVertices; y++) {
 			if (this->graphs.aristas[x][y] == 1) {
