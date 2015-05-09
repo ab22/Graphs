@@ -162,12 +162,10 @@ LRESULT MainEventHandler::onToolbarAddNodeClick() {
 	TCHAR* nodeName;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_ADD_NODE_DIALOG), this->hwnd, AddNodeDialogProc);
-	if (nodeName == NULL) {
-		return TRUE;
+	if (nodeName != NULL) {
+		this->addingNode = true;
+		this->tmpNodeName = nodeName;
 	}
-	
-	this->addingNode = true;
-	this->tmpNodeName = nodeName;
 	return TRUE;
 }
 
