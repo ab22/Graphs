@@ -22,6 +22,6 @@ public:
 	LRESULT OnCommand(CommandWindowMessage*);
 
 private:
-	LRESULT onOkButtonClick();
-	void    addStrongComponents(Graphs*);
+	LRESULT  onOkButtonClick();
+	void      addStrongComponents(Graphs*);
 };

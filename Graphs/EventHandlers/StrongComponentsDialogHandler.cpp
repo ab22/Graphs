@@ -33,13 +33,16 @@ void StrongComponentsDialogHandler::addStrongComponents(Graphs* graphs) {
 	const int vertexNameLength = 2;
 	TCHAR     vertexName[vertexNameLength];
 	HWND      listBox;
-	int*      strongComponents;
+	HWND      txtEulerCycle;
+	int*      strongComponents = NULL;
+	int       vertexAmount;
 	int       space;
 
 	if (graphs->nVertices == 0)
 		return;
 
 	listBox = GetDlgItem(this->hwnd, IDC_COMPONENTS_LIST);
+	txtEulerCycle = GetDlgItem(this->hwnd, IDC_EULER_CYCLE_TEXT);
 
 	strongComponents = graphs->componentesFuertes();
 	space = 0;
@@ -50,4 +53,13 @@ void StrongComponentsDialogHandler::addStrongComponents(Graphs* graphs) {
 			space++;
 		}
 	}
+	vertexAmount = graphs->contarAristas();
+	if (space == 1 && vertexAmount % 2 == 0) {
+		
+	}
+	else
+		SetWindowText(txtEulerCycle, TEXT("No euler cycle!"));
+
+	if (strongComponents != NULL)
+		delete[] strongComponents;
 }
