@@ -11,7 +11,7 @@ MainEventHandler::MainEventHandler() {
 	this->tmpNodeName = NULL;
 	this->organizeByName = true;
 	this->showDijkstraLabels = false;
-	this->showVertices = true;
+	this->showNodes = true;
 	this->showFloydMatrices = false;
 }
 
@@ -38,7 +38,7 @@ LRESULT MainEventHandler::OnPaint(PaintWindowMessage *msg) {
 	HDC         hdc;
 
 	hdc = BeginPaint(msg->hwnd, &ps);
-	if (this->showVertices) {
+	if (this->showNodes) {
 		this->drawNodes(hdc);
 	}
 	else if (this->showFloydMatrices) {
@@ -75,8 +75,8 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 		return this->onToolbarShowDijkstraLabelsClick();
 	case TOOLBAR_BUTTON::SHOW_FLOYD_MATRICES:
 		return this->onToolbarShowFloydMatricesClick();
-	case TOOLBAR_BUTTON::SHOW_VERTICES:
-		return this->onToolbarShowVerticesClick();
+	case TOOLBAR_BUTTON::SHOW_NODES:
+		return this->onToolbarShowNodesClick();
 	case TOOLBAR_BUTTON::STRONG_COMPONENTS:
 		return this->onToolbarStrongComponentsClick();
 	case TOOLBAR_BUTTON::EXIT:
@@ -159,7 +159,7 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[6] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::IS_ACYCLIC, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Is Acyclic" };
 	tbButtons[7] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show/Hide Dijkstra" };
 	tbButtons[8] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_FLOYD_MATRICES, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show Floyd Matrices" };
-	tbButtons[9] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_VERTICES, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show Vertices" };
+	tbButtons[9] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_NODES, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show Nodes" };
 	tbButtons[10] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::STRONG_COMPONENTS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Strong Components" };
 	tbButtons[11] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
@@ -267,14 +267,14 @@ LRESULT MainEventHandler::onToolbarShowDijkstraLabelsClick() {
 
 LRESULT MainEventHandler::onToolbarShowFloydMatricesClick() {
 	this->showFloydMatrices = true;
-	this->showVertices = false;
+	this->showNodes = false;
 	InvalidateRect(this->hwnd, 0, true);
 	return TRUE;
 }
 
-LRESULT MainEventHandler::onToolbarShowVerticesClick() {
+LRESULT MainEventHandler::onToolbarShowNodesClick() {
 	this->showFloydMatrices = false;
-	this->showVertices = true;
+	this->showNodes = true;
 	InvalidateRect(this->hwnd, 0, true);
 	return TRUE;
 }

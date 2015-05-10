@@ -26,7 +26,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 
 enum TOOLBAR_BUTTON {
-	SHOW_VERTICES,
+	SHOW_NODES,
 	ADD_NODE,
 	DELETE_NODE,
 	ADD_VERTEX,
@@ -56,7 +56,7 @@ private:
 	int                 charHeight;
 
 	TCHAR*              tmpNodeName;
-	bool                showVertices;
+	bool                showNodes;
 	bool                showFloydMatrices;
 	bool                showDijkstraLabels;
 	bool                organizeByName;
@@ -88,7 +88,7 @@ private:
 	LRESULT  onToolbarShowFloydMatricesClick();
 	LRESULT  onToolbarCheckAcyclicityClick();
 	LRESULT  onToolbarStrongComponentsClick();
-	LRESULT  onToolbarShowVerticesClick();
+	LRESULT  onToolbarShowNodesClick();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	
