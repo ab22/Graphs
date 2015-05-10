@@ -77,8 +77,6 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 		return this->onToolbarShowFloydMatricesClick();
 	case TOOLBAR_BUTTON::SHOW_VERTICES:
 		return this->onToolbarShowVerticesClick();
-	case TOOLBAR_BUTTON::EULER_LOOP:
-		return this->onToolbarEulerLoopClick();
 	case TOOLBAR_BUTTON::STRONG_COMPONENTS:
 		return this->onToolbarStrongComponentsClick();
 	case TOOLBAR_BUTTON::EXIT:
@@ -121,7 +119,7 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 13;
+	const int   numButtons = 12;
 	const int   imageListId = 0;
 	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
@@ -162,9 +160,8 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[7] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show/Hide Dijkstra" };
 	tbButtons[8] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_FLOYD_MATRICES, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show Floyd Matrices" };
 	tbButtons[9] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_VERTICES, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show Vertices" };
-	tbButtons[10] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::EULER_LOOP, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Euler Loop" };
-	tbButtons[11] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::STRONG_COMPONENTS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Strong Components" };
-	tbButtons[12] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[10] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::STRONG_COMPONENTS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Strong Components" };
+	tbButtons[11] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -298,11 +295,6 @@ LRESULT MainEventHandler::onToolbarCheckAcyclicityClick() {
 
 	MessageBox(this->hwnd, message, TEXT("Acyclicity"), MB_OK | MB_ICONINFORMATION);
 	delete[] message;
-
-	return TRUE;
-}
-
-LRESULT MainEventHandler::onToolbarEulerLoopClick() {
 
 	return TRUE;
 }
