@@ -26,6 +26,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 
 enum TOOLBAR_BUTTON {
+	SHOW_VERTICES,
 	ADD_NODE,
 	DELETE_NODE,
 	ADD_VERTEX,
@@ -34,7 +35,7 @@ enum TOOLBAR_BUTTON {
 	ORGANIZE_TOPOLOGY,
 	IS_ACYCLIC,
 	SHOW_DIJKSTRA_LABELS,
-	EULER_LOOP,
+	SHOW_FLOYD_MATRICES,
 	STRONG_COMPONENTS,
 	EXIT
 };
@@ -55,6 +56,8 @@ private:
 	int                 charHeight;
 
 	TCHAR*              tmpNodeName;
+	bool                showVertices;
+	bool                showFloydMatrices;
 	bool                showDijkstraLabels;
 	bool                organizeByName;
 	bool                addingNode;	
@@ -82,14 +85,16 @@ private:
 	LRESULT  onToolbarOrganizeByNameClick();
 	LRESULT  onToolbarOrganizeByTopologyClick();
 	LRESULT  onToolbarShowDijkstraLabelsClick();
+	LRESULT  onToolbarShowFloydMatricesClick();
 	LRESULT  onToolbarCheckAcyclicityClick();
-	LRESULT  onToolbarEulerLoopClick();
 	LRESULT  onToolbarStrongComponentsClick();
+	LRESULT  onToolbarShowVerticesClick();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	
 	void     createMainToolbar();
 	void     drawNodes(HDC);
+	void     drawFloydMatrices(HDC);
 	bool     addNode(int, int);
 	bool     addVertex(TCHAR*, TCHAR*, TCHAR*);
 	bool     deleteVertex(TCHAR*, TCHAR*);	

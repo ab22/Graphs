@@ -11,6 +11,8 @@ MainEventHandler::MainEventHandler() {
 	this->tmpNodeName = NULL;
 	this->organizeByName = true;
 	this->showDijkstraLabels = false;
+	this->showVertices = true;
+	this->showFloydMatrices = false;
 }
 
 MainEventHandler::~MainEventHandler() {
@@ -36,7 +38,12 @@ LRESULT MainEventHandler::OnPaint(PaintWindowMessage *msg) {
 	HDC         hdc;
 
 	hdc = BeginPaint(msg->hwnd, &ps);
-	this->drawNodes(hdc);
+	if (this->showVertices) {
+		this->drawNodes(hdc);
+	}
+	else if (this->showFloydMatrices) {
+		this->drawFloydMatrices(hdc);
+	}
 	EndPaint(msg->hwnd, &ps);
 
 	return 0;
@@ -66,6 +73,10 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 		return this->onToolbarCheckAcyclicityClick();
 	case TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS:
 		return this->onToolbarShowDijkstraLabelsClick();
+	case TOOLBAR_BUTTON::SHOW_FLOYD_MATRICES:
+		return this->onToolbarShowFloydMatricesClick();
+	case TOOLBAR_BUTTON::SHOW_VERTICES:
+		return this->onToolbarShowVerticesClick();
 	case TOOLBAR_BUTTON::EULER_LOOP:
 		return this->onToolbarEulerLoopClick();
 	case TOOLBAR_BUTTON::STRONG_COMPONENTS:
@@ -110,7 +121,7 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 11;
+	const int   numButtons = 13;
 	const int   imageListId = 0;
 	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
@@ -149,9 +160,11 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[5] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::ORGANIZE_TOPOLOGY, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Organize by Topology" };
 	tbButtons[6] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::IS_ACYCLIC, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Is Acyclic" };
 	tbButtons[7] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show/Hide Dijkstra" };
-	tbButtons[8] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::EULER_LOOP, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Euler Loop" };
-	tbButtons[9] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::STRONG_COMPONENTS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Strong Components" };
-	tbButtons[10] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[8] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_FLOYD_MATRICES, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show Floyd Matrices" };
+	tbButtons[9] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_VERTICES, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show Vertices" };
+	tbButtons[10] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::EULER_LOOP, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Euler Loop" };
+	tbButtons[11] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::STRONG_COMPONENTS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Strong Components" };
+	tbButtons[12] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -251,6 +264,20 @@ LRESULT MainEventHandler::onToolbarOrganizeByTopologyClick() {
 
 LRESULT MainEventHandler::onToolbarShowDijkstraLabelsClick() {
 	this->showDijkstraLabels = !this->showDijkstraLabels;
+	InvalidateRect(this->hwnd, 0, true);
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarShowFloydMatricesClick() {
+	this->showFloydMatrices = true;
+	this->showVertices = false;
+	InvalidateRect(this->hwnd, 0, true);
+	return TRUE;
+}
+
+LRESULT MainEventHandler::onToolbarShowVerticesClick() {
+	this->showFloydMatrices = false;
+	this->showVertices = true;
 	InvalidateRect(this->hwnd, 0, true);
 	return TRUE;
 }
@@ -382,6 +409,87 @@ void MainEventHandler::drawNodes(HDC hdc) {
 		delete[] label;
 		delete[] dijkstra;
 	}
+}
+
+void MainEventHandler::drawFloydMatrices(HDC hdc) {
+	WCHAR*   distance;
+	WCHAR*   iteration;
+	Floyd*   floyd;
+	int      espacio;
+	int      espacio2;
+	if (this->graphs.nVertices == 0)
+		return;
+
+	floyd = new Floyd;
+	this->graphs.algoritmoFloyd(floyd);
+	espacio = 0;
+	espacio2 = 0;
+	distance = new WCHAR[10];
+	iteration = new WCHAR[10];
+
+	TextOut(hdc, this->charWidth * 15, this->charHeight * 8, TEXT("Floyd"), 5);
+
+	TextOut(hdc, this->charWidth * 17, this->charHeight * 9, TEXT("Distancias"), 10);
+	TextOut(hdc, this->charWidth * 90, this->charHeight * 9, TEXT("Iteraciones"), 11);
+
+	TextOut(hdc, this->charWidth * 17, this->charHeight * 20, TEXT("Matriz Adyacencia"), 17);
+	TextOut(hdc, this->charWidth * 90, this->charHeight * 20, TEXT("Matriz Incidencia"), 17);
+	for (int i = 0; i < graphs.nVertices; i++) {
+		TextOut(hdc, this->charWidth*(16 + espacio), this->charHeight * 10, graphs.vertices[i], 1);
+		TextOut(hdc, this->charWidth*(15 - 1), this->charHeight*(11 + espacio2), graphs.vertices[i], 1);
+
+		TextOut(hdc, this->charWidth*(91 + espacio), this->charHeight * 10, graphs.vertices[i], 1);
+		TextOut(hdc, this->charWidth*(90 - 1), this->charHeight*(11 + espacio2), graphs.vertices[i], 1);
+
+		TextOut(hdc, this->charWidth*(16 + espacio), this->charHeight * 21, graphs.vertices[i], 1);
+		TextOut(hdc, this->charWidth*(15 - 1), this->charHeight*(22 + espacio2), graphs.vertices[i], 1);
+
+
+		TextOut(hdc, this->charWidth*(90 - 1), this->charHeight*(22 + espacio2), graphs.vertices[i], 1);
+
+		espacio += 3;
+		espacio2++;
+	}
+	espacio = espacio2 = 0;
+	for (int x = 0; x < graphs.nVertices; x++) {
+		for (int y = 0; y < graphs.nVertices; y++) {
+			if (floyd->distancias[x][y] == INF) {
+				TextOut(hdc, this->charWidth*(16 + espacio), this->charHeight*(11 + espacio2), TEXT("Inf"), 3);
+				wsprintf(iteration, TEXT("%d"), floyd->iteraciones[x][y]);
+				TextOut(hdc, this->charWidth*(91 + espacio), this->charHeight*(11 + espacio2), iteration, lstrlen(iteration));
+			}
+			else if (floyd->distancias[x][y] == EMPTY) {
+				TextOut(hdc, this->charWidth*(16 + espacio), this->charHeight*(11 + espacio2), TEXT("--"), 2);
+				TextOut(hdc, this->charWidth*(91 + espacio), this->charHeight*(11 + espacio2), TEXT("--"), 2);
+			}
+			else {
+				wsprintf(distance, TEXT("%d"), floyd->distancias[x][y]);
+				wsprintf(iteration, TEXT("%d"), floyd->iteraciones[x][y]);
+				TextOut(hdc, this->charWidth*(16 + espacio), this->charHeight*(11 + espacio2), distance, lstrlen(distance));
+				TextOut(hdc, this->charWidth*(91 + espacio), this->charHeight*(11 + espacio2), iteration, lstrlen(iteration));
+			}
+			TextOut(hdc, this->charWidth*(16 + espacio), this->charHeight*(22 + espacio2), graphs.aristas[x][y] == 1 ? TEXT("1") : TEXT("0"), 1);
+
+			espacio += 3;
+		}
+		espacio2++;
+		espacio = 0;
+	}
+	espacio = espacio2 = 0;
+
+	for (int x = 0; x < graphs.nVertices; x++) {
+		for (int y = 0; y < graphs.nAristas; y++) {
+			WCHAR buf[3];
+			wsprintf(buf, TEXT("%d"), y + 1);
+			TextOut(hdc, this->charWidth*(91 + espacio), this->charHeight * 21, buf, 1);
+			TextOut(hdc, this->charWidth*(91 + espacio), this->charHeight*(22 + espacio2), (graphs.inc1[y] == x || graphs.inc2[y] == x) ? TEXT("1") : TEXT("0"), 1);
+			espacio += 3;
+		}
+		espacio2++;
+		espacio = 0;
+	}
+	delete[]distance;
+	delete[]iteration;
 }
 
 bool MainEventHandler::addVertex(TCHAR* source, TCHAR* destination, TCHAR* distance) {
