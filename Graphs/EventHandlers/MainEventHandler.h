@@ -7,6 +7,7 @@
 
 #include "../Infrastructure/Messages/WindowMessages.h"
 
+#include "../DialogProcedures/StrongComponentsDialogProc.h"
 #include "../DialogProcedures/DeleteVertexDialogProc.h"
 #include "../DialogProcedures/DeleteNodeDialogProc.h"
 #include "../DialogProcedures/AddVertexDialogProc.h"
@@ -34,6 +35,7 @@ enum TOOLBAR_BUTTON {
 	IS_ACYCLIC,
 	SHOW_DIJKSTRA_LABELS,
 	EULER_LOOP,
+	STRONG_COMPONENTS,
 	EXIT
 };
 
@@ -82,6 +84,7 @@ private:
 	LRESULT  onToolbarShowDijkstraLabelsClick();
 	LRESULT  onToolbarCheckAcyclicityClick();
 	LRESULT  onToolbarEulerLoopClick();
+	LRESULT  onToolbarStrongComponentsClick();
 	LRESULT  onToolbarExitClick();
 	BOOL     initCommonVisualControls();
 	void     calculateDefaultFontSizes(HDC);	

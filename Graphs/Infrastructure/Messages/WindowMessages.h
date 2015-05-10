@@ -9,3 +9,4 @@
 #include "CreateWindowMessage.h"
 #include "ResizeWindowMessage.h"
 #include "PaintWindowMessage.h"
+#include "InitDialogMessage.h"

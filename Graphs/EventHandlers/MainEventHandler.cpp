@@ -68,6 +68,8 @@ LRESULT MainEventHandler::OnCommand(CommandWindowMessage *msg) {
 		return this->onToolbarShowDijkstraLabelsClick();
 	case TOOLBAR_BUTTON::EULER_LOOP:
 		return this->onToolbarEulerLoopClick();
+	case TOOLBAR_BUTTON::STRONG_COMPONENTS:
+		return this->onToolbarStrongComponentsClick();
 	case TOOLBAR_BUTTON::EXIT:
 		return this->onToolbarExitClick();
 	}
@@ -108,7 +110,7 @@ void MainEventHandler::createMainToolbar() {
 	const DWORD buttonStyles = BTNS_AUTOSIZE;
 	HIMAGELIST  imageList = NULL;
 	const int   bitmapSize = 16;
-	const int   numButtons = 10;
+	const int   numButtons = 11;
 	const int   imageListId = 0;
 	TBBUTTON    tbButtons[numButtons];
 	HWND        toolBar = NULL;
@@ -148,7 +150,8 @@ void MainEventHandler::createMainToolbar() {
 	tbButtons[6] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::IS_ACYCLIC, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Is Acyclic" };
 	tbButtons[7] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::SHOW_DIJKSTRA_LABELS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Show/Hide Dijkstra" };
 	tbButtons[8] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::EULER_LOOP, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Euler Loop" };
-	tbButtons[9] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
+	tbButtons[9] = { MAKELONG(STD_CUT, imageListId), TOOLBAR_BUTTON::STRONG_COMPONENTS, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Strong Components" };
+	tbButtons[10] = { MAKELONG(STD_DELETE, imageListId), TOOLBAR_BUTTON::EXIT, TBSTATE_ENABLED, buttonStyles, { 0 }, 0, (INT_PTR)L"Exit" };
 
 	// Add buttons.
 	SendMessage(toolBar, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
@@ -174,9 +177,8 @@ LRESULT MainEventHandler::onToolbarDeleteNodeClick() {
 	int    result;
 
 	nodeName = (TCHAR*)DialogBox(this->hInstance, MAKEINTRESOURCE(IDD_DELETE_NODE_DIALOG), this->hwnd, DeleteNodeDialogProc);
-	if (nodeName == NULL) {
+	if (nodeName == NULL)
 		return TRUE;
-	}
 
 	result = this->graphs.borrar(nodeName);
 	if (result == -1) {
@@ -278,6 +280,11 @@ LRESULT MainEventHandler::onToolbarEulerLoopClick() {
 	return TRUE;
 }
 
+LRESULT MainEventHandler::onToolbarStrongComponentsClick() {
+	DialogBoxParam(this->hInstance, MAKEINTRESOURCE(IDD_STRONG_COMPONENTS), this->hwnd, StrongComponentsDialogProc, (LPARAM)&this->graphs);
+	return TRUE;
+}
+
 LRESULT MainEventHandler::onToolbarExitClick() {
 	SendMessage(this->hwnd, WM_CLOSE, 0, 0);
 	return TRUE;
@@ -301,6 +308,8 @@ void MainEventHandler::drawNodes(HDC hdc) {
 		TODO: 
 			Refactor ._. 
 	*/
+	if (this->graphs.nVertices == 0)
+		return;
 
 	HRGN hRgn = NULL;
 
