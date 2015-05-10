@@ -55,10 +55,10 @@ void StrongComponentsDialogHandler::addStrongComponents(Graphs* graphs) {
 	}
 	vertexAmount = graphs->contarAristas();
 	if (space == 1 && vertexAmount % 2 == 0) {
-		
+		SetWindowText(txtEulerCycle, TEXT("Euler cycle exists!"));
 	}
 	else
-		SetWindowText(txtEulerCycle, TEXT("No euler cycle!"));
+		SetWindowText(txtEulerCycle, TEXT("Euler cycle exists!"));
 
 	if (strongComponents != NULL)
 		delete[] strongComponents;
