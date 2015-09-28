@@ -1,6 +1,6 @@
 # Graphs
 
-Remake of my final proyect for the Programming 3 class at Unitec.
+Remake of my final project for the Programming 3 class at Unitec.
 
 ## Changes
 
